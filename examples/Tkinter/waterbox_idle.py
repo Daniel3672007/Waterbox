@@ -13,36 +13,36 @@ from influxdb_client.client.write_api import SYNCHRONOUS
 import pandas as pd
 import os
 
-# 连接InfluxDB
+# 連接InfluxDB
 token = "fP-GBq8Z1wZE7iW8qFBuxVy-ArVP9TqVec0naJ77XLECiwSr82aRXqvo3ylXZqU_2ad2vxWGcMoMbl3PXqAZ7A=="
 server_url = "http://140.112.12.62:8086"
 client = InfluxDBClient(url=server_url, token=token)
 query_api = client.query_api()
 
-# 查询参数
-params = ["bat_a", "bat_v", "s_ec2", "s_ph2", "date", "s_Tb", "s_t7"]  # 参数列表
+# 查詢數據
+params = ["bat_a", "bat_v", "s_ec2", "s_ph2", "date", "s_Tb", "s_t7"]  # 數據列表
 
-# 创建Tkinter窗口
+# 新增Tkinter視窗
 root = tk.Tk()
 root.title("Matplotlib in Tkinter")
 
-# 创建Matplotlib图形
+# 新增Matplotlib圖表
 fig = Figure(figsize=(8, 4), dpi=100)
 ax = fig.add_subplot(111)
 
-# 创建FigureCanvasTkAgg实例
+# 新增FigureCanvasTkAgg
 canvas = FigureCanvasTkAgg(fig, master=root)
 canvas_widget = canvas.get_tk_widget()
 canvas_widget.pack()
 
-# 创建下拉菜单
+# 新增下拉式選單
 param_var = tk.StringVar(value=params[0])
 param_menu = ttk.Combobox(root, textvariable=param_var, values=params)
 param_menu.pack(pady=10)
 
 global result
 
-# 查询并绘图函数
+# 查詢並繪圖
 def query_and_plot():
     global result
     try:
@@ -68,7 +68,7 @@ def query_and_plot():
             ax.grid(True)
             ax.plot(time, data, label=field_name)
 
-        # 显示图表
+        # 顯示圖表
         canvas.draw()
 
         # 調整子圖位置
@@ -78,13 +78,13 @@ def query_and_plot():
         pass  # 忽略 TclError
 
 
-# 导出至Excel按钮
+# 導出至excel
 def export_to_excel():
     if 'result' in globals() and result:
-        # 創建空列表以存儲所有資料
+        # 新增空列表以儲存所有資料
         data_list = []
 
-        # 逐一遍歷查詢結果並提取資料和時間戳記
+        # 逐一遍查詢結果並提取資料和時間戳記
         for table in result:
             field_name = table.records[0].values['_field']
             data = [data.values['_value'] for data in table.records]
@@ -113,12 +113,12 @@ def export_to_excel():
 
 
 # ------------------------------------------------------------------- #
-# 创建查询按钮
+# 新增查詢按鈕
 query_button = tk.Button(root, text="繪製趨勢圖", command=query_and_plot)
 query_button.pack()
 
 export_button = tk.Button(root, text="導出至Excel", command=export_to_excel)
 export_button.pack()
 
-# 启动Tkinter主循环
+# 啟動
 root.mainloop()
